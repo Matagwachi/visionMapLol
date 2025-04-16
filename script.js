@@ -92,8 +92,7 @@ function drawVisionCircleWithCollision(x, y, isInBush) {
 
     let isInBushNow = false;
     let blocked = false;
-    let c = 0
-    
+
     for (let i = 0; i < radius; i++) {
       const px = Math.floor(x + dx * i);
       const py = Math.floor(y + dy * i);
@@ -115,13 +114,8 @@ function drawVisionCircleWithCollision(x, y, isInBush) {
       }
 
       // Bush : on détecte la couleur verte du bush
-      if (r < 50 && g  > 225 && b < 50) {
-        if  (!isInBushNow && c < 5) {
-            isInBushNow = true;  // On marque qu'on est dans un bush
-        } else if (!isInBushNow) {
-            blocked = true;
-            break;
-        }
+      if (r < 50 && g > 225 && b < 50) {
+        isInBushNow = true;  // On marque qu'on est dans un bush
       }
 
       // Si ce pixel n'est pas bloqué, on continue à dessiner la vision
