@@ -1,108 +1,103 @@
-Super projet ! Tu veux créer un simulateur de vision façon *League of Legends*, avec des **bush**, **murs**, **wards** et une image de la carte comme base. Ce projet est faisable en Python avec quelques outils :
+Bien sûr ! Voici un exemple de `README.md` pour présenter ton projet sur GitHub, avec une structure claire, un ton engageant, et des instructions d'utilisation :
 
 ---
 
-### 🧰 **Technos conseillées :**
-- `pygame` : pour l'affichage interactif de la map, clics de souris, etc.
-- `Pillow` ou `OpenCV` : pour manipuler l’image.
-- Fichiers `.json` ou `.yaml` pour sauvegarder la position des murs, bushs et wards.
+```markdown
+# 🗺️ VisionMapLoL – Visualisateur de Champ de Vision pour League of Legends
+
+Ce projet est un simulateur interactif du **champ de vision** des wards dans League of Legends. Il permet de visualiser comment la vision est bloquée par les murs et modifiée par les buissons (bushes) en fonction de la position de la ward.
+
+Le tout est entièrement en **HTML5 + JavaScript**, fonctionnel sur **GitHub Pages** ou tout autre serveur web statique.
+
+## 🎯 Objectif
+
+Permettre aux joueurs et aux analystes LoL de :
+- Visualiser en temps réel le champ de vision d’une ward.
+- Comprendre l’impact des buissons sur la propagation de la vision.
+- Apprendre à mieux positionner les wards.
 
 ---
 
-### 🔧 **Fonctionnalités que tu veux :**
-1. Charger une image de la map.
-2. Pouvoir définir :
-   - les zones **bush**
-   - les **murs**
-3. Ajouter / retirer des **wards** (green ou pink par exemple).
-4. Simuler la **vision dans un rayon donné**, qui est stoppée par les murs sauf s’il y a une ward.
-5. Tenir compte des bushs : s’il y a un ennemi dans un bush non révélé par une ward, on ne le voit pas.
+## 🧠 Fonctionnalités
+
+- ✅ Ajout/suppression de wards par simple clic.
+- ✅ Affichage du champ de vision (couleur différente dans et hors bush).
+- ✅ Collision avec les murs (vision bloquée).
+- ✅ Bushs identifiés par la couleur verte (dans une image de collision).
+- ✅ Fonctionne sans serveur : uniquement en front-end (compatible GitHub Pages).
 
 ---
 
-### 💡 Approche (étapes de base)
+## 📦 Structure du projet
 
-1. **Charger la map** (fichier `.jpg` ou `.png`)
-2. **Créer des "layers"** :
-   - Zone de **murs** (tu les définis à la main ou via clic souris)
-   - Zone de **bush** (pareil)
-3. Quand tu places une ward :
-   - Elle éclaire dans un rayon (ex. 900 unités)
-   - La vision est bloquée par les murs (raycasting)
-   - Si un bush est dans le rayon et qu’il y a une ward dedans → on peut voir dedans
-
----
-
-### 🧪 Exemple de prototype basique (vision circulaire)
-
-```python
-import pygame
-import math
-
-WIDTH, HEIGHT = 1280, 720
-VISION_RADIUS = 900
-
-pygame.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Simulateur de vision - LoL")
-
-# Charger la map
-map_image = pygame.image.load("map_image.jpg")
-map_rect = map_image.get_rect()
-
-# Exemple de bushs/murs
-bushes = []
-walls = []
-wards = []
-
-def draw_vision(surface, pos):
-    vision_mask = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
-    pygame.draw.circle(vision_mask, (255, 255, 0, 80), pos, VISION_RADIUS)
-    surface.blit(vision_mask, (0, 0))
-
-def main():
-    running = True
-    clock = pygame.time.Clock()
-
-    while running:
-        screen.blit(map_image, (0, 0))
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-            # Clic gauche pour ajouter une ward
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    wards.append(pygame.mouse.get_pos())
-
-        # Affiche wards + vision
-        for ward_pos in wards:
-            pygame.draw.circle(screen, (0, 255, 0), ward_pos, 5)
-            draw_vision(screen, ward_pos)
-
-        pygame.display.flip()
-        clock.tick(60)
-
-    pygame.quit()
-
-if __name__ == "__main__":
-    main()
+```
+visionMapLoL/
+│
+├── img/
+│   ├── map.png         # Image de la carte
+│   └── mur.png         # Image de collision : murs (noir) et buissons (vert)
+│
+├── index.html          # Fichier HTML principal
+├── script.js           # Code JavaScript (logique et dessin)
+└── style.css           # Feuilles de style (optionnel)
 ```
 
 ---
 
-### 🔜 À rajouter ensuite :
-- Zone de **murs** : avec du **raycasting** pour bloquer la vision
-- Zone de **bush** : zones spéciales visibles uniquement si une ward est proche
-- Interface pour **dessiner les murs / bush** à la main (clics souris)
-- Système de **sauvegarde** de la map modifiée
+## 🚀 Lancer le projet
+
+### En local :
+
+1. Clone le repo :
+```bash
+git clone https://github.com/votre-utilisateur/visionMapLoL.git
+cd visionMapLoL
+```
+
+2. Démarre un serveur local :
+```bash
+# Python 3
+python -m http.server
+```
+
+3. Ouvre dans ton navigateur :
+```
+http://localhost:8000
+```
+
+### En ligne :
+
+Tu peux héberger le projet gratuitement via **GitHub Pages** :
+1. Va dans les *Settings* du repo.
+2. Active GitHub Pages dans l'onglet *Pages*.
+3. Choisis la branche et le dossier (`/root`).
+4. Lien accessible après quelques secondes.
 
 ---
 
-### Tu veux que je t’aide à :
-- Créer l’interface pour ajouter des murs/bush ?
-- Gérer la logique de vision bloquée par les murs ?
-- Ajouter une "vision réelle" à travers le bush selon qu’il y a une ward ou non ?
+## 🧱 Images de collision
 
-Dis-moi par quoi tu veux commencer et je te code ça étape par étape 🔧🔥
+- Les **murs** doivent être en **noir** `(0, 0, 0)`.
+- Les **buissons** doivent être en **vert pur** `(0, 255, 0)`.
+
+Tu peux éditer le fichier `mur.png` avec un éditeur d’image comme GIMP ou Photoshop.
+
+---
+
+## 💡 Idées futures
+
+- Vision des balises de contrôle (control ward).
+- Interaction avec la fog of war.
+- Simulation multi-wards.
+- Export image ou GIF du rendu.
+- Ajout de map ocean et montagne
+
+---
+
+## 🧑‍💻 Développé avec ❤️ par Moi et ChatGPT
+
+---
+
+## ⚖️ Licence
+
+Ce projet est open-source sous licence MIT. Tu peux le modifier, le partager, ou le cloner librement.
