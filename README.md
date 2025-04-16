@@ -1,8 +1,3 @@
-Bien sûr ! Voici un exemple de `README.md` pour présenter ton projet sur GitHub, avec une structure claire, un ton engageant, et des instructions d'utilisation :
-
----
-
-```markdown
 # 🗺️ VisionMapLoL – Visualisateur de Champ de Vision pour League of Legends
 
 Ce projet est un simulateur interactif du **champ de vision** des wards dans League of Legends. Il permet de visualiser comment la vision est bloquée par les murs et modifiée par les buissons (bushes) en fonction de la position de la ward.
