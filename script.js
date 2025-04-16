@@ -81,56 +81,53 @@ function drawWard(x, y) {
 
 // Fonction pour dessiner le champ de vision d'une ward
 function drawVisionCircleWithCollision(x, y, isInBush) {
-  const directions = 360;
-  const radius = 85;
-
-  const imageData = collisionCtx.getImageData(0, 0, collisionCanvas.width, collisionCanvas.height).data;
-
-  for (let angle = 0; angle < directions; angle++) {
-    const dx = Math.cos(angle * Math.PI / 180);
-    const dy = Math.sin(angle * Math.PI / 180);
-
-    let isInBushNow = false;
-    let blocked = false;
-
-    for (let i = 0; i < radius; i++) {
-      const px = Math.floor(x + dx * i);
-      const py = Math.floor(y + dy * i);
-
-      if (px < 0 || py < 0 || px >= collisionCanvas.width || py >= collisionCanvas.height) break;
-
-      const idx = (py * collisionCanvas.width + px) * 4;
-      const r = imageData[idx];
-      const g = imageData[idx + 1];
-      const b = imageData[idx + 2];
-
-      // Log pour chaque pixel analysé (peut être commenté après débogage)
-      console.log(`Checking pixel at: ${px}, ${py} => r: ${r}, g: ${g}, b: ${b}`);
-
-      // Mur : on arrête la vision si c'est un mur noir
-      if (r < 50 && g < 50 && b < 50) {
-        blocked = true;
-        break;
-      }
-
-      // Bush : on détecte la couleur verte du bush
-      if (r < 50 && g > 225 && b < 50) {
-        isInBushNow = true;  // On marque qu'on est dans un bush
-      }
-
-      // Si ce pixel n'est pas bloqué, on continue à dessiner la vision
-      if (!blocked) {
-        // Si la ward est dans un bush, la vision peut sortir du bush
-        if (isInBush || !isInBushNow) {
-          // Dessiner un champ de vision en fonction de la zone (bush ou non)
-          if (isInBushNow) {
-            ctx.fillStyle = 'rgba(0, 255, 0, 0.2)';  // Vert translucide pour le bush
-          } else {
-            ctx.fillStyle = 'rgba(255, 255, 0, 0.25)';  // Jaune normal pour la vision
-          }
-          ctx.fillRect(px, py, 1, 1);  // On dessine un pixel du champ de vision
+    const directions = 360;
+    const radius = 85;
+  
+    const imageData = collisionCtx.getImageData(0, 0, collisionCanvas.width, collisionCanvas.height).data;
+  
+    for (let angle = 0; angle < directions; angle++) {
+      const dx = Math.cos(angle * Math.PI / 180);
+      const dy = Math.sin(angle * Math.PI / 180);
+  
+      let c = 0;
+      let inBushRay = false;
+  
+      for (let i = 0; i < radius; i++) {
+        const px = Math.floor(x + dx * i);
+        const py = Math.floor(y + dy * i);
+  
+        if (px < 0 || py < 0 || px >= collisionCanvas.width || py >= collisionCanvas.height) break;
+  
+        const idx = (py * collisionCanvas.width + px) * 4;
+        const r = imageData[idx];
+        const g = imageData[idx + 1];
+        const b = imageData[idx + 2];
+  
+        c++;
+  
+        // Mur
+        if (r < 50 && g < 50 && b < 50) {
+          break;
         }
+  
+        // Bush
+        let pixelIsBush = (r < 50 && g > 225 && b < 50);
+        if (pixelIsBush && !inBushRay && c < 5) {
+          inBushRay = true;
+        } else if (pixelIsBush && !inBushRay) {
+          // Si la ward n'est pas dans un bush et on touche un bush => bloqué
+          if (!isInBush) break;
+        }
+  
+        // On dessine le pixel
+        if (pixelIsBush) {
+          ctx.fillStyle = 'rgba(0, 255, 0, 0.2)';
+        } else {
+          ctx.fillStyle = 'rgba(255, 255, 0, 0.25)';
+        }
+  
+        ctx.fillRect(px, py, 1, 1);
       }
     }
   }
-}
