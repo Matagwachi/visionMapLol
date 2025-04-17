@@ -77,9 +77,10 @@ function drawVisionCircleWithCollision(x, y, isInBush) {
 
     let rayLength = 0;
     let inBushRay = false;
-    let out = false
-    let isInBushv2 = isInBush
+    let isInBushv2 = isInBush;
+
     for (let i = 0; i < radius; i++) {
+
       const px = Math.floor(x + dx * i);
       const py = Math.floor(y + dy * i);
       if (px < 0 || py < 0 || px >= width || py >= height) break;
