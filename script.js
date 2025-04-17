@@ -100,7 +100,7 @@ function drawVisionCircleWithCollision(x, y, isInBush) {
         inBushRay = false;
       }
 
-      if (pixelIsBush && !inBushRay && isInBushv2) {
+      if (pixelIsBush && !inBushRay && rayLength < 5) {
         inBushRay = true;
       } else if (pixelIsBush && !inBushRay && !isInBushv2) {
         break;
