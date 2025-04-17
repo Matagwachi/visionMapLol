@@ -89,6 +89,64 @@ Tu peux éditer le fichier `mur.png` avec un éditeur d’image comme GIMP ou Ph
 
 ---
 
+### ✅ Étapes à suivre
+
+#### 1. 🧩 Ajouter un bouton HTML
+
+Dans ton fichier `index.html`, ajoute par exemple deux boutons au-dessus du canvas :
+
+```html
+<div style="margin-bottom: 10px;">
+  <button onclick="loadMap('map')">Map par défaut</button>
+  <button onclick="loadMap('map2')">Map alternative</button>
+</div>
+<canvas id="gameCanvas"></canvas>
+```
+
+---
+
+#### 2. 🔄 Créer la fonction `loadMap(nom)`
+
+Dans ton `script.js`, remplace les parties de chargement des images par une fonction `loadMap(name)` qui change à la fois la **carte** et le **fichier de collision** :
+
+```js
+function loadMap(name) {
+  imageMap.src = `img/${name}.png`;        // ex: img/map.png ou img/map2.png
+  imageCollision.src = `img/${name}_mur.png`;  // ex: img/map_mur.png ou img/map2_mur.png
+
+  imageMap.onload = function () {
+    canvas.width = imageMap.width;
+    canvas.height = imageMap.height;
+    collisionCanvas.width = imageMap.width;
+    collisionCanvas.height = imageMap.height;
+    drawScene();
+  };
+
+  imageCollision.onload = function () {
+    collisionCtx.clearRect(0, 0, collisionCanvas.width, collisionCanvas.height);
+    collisionCtx.drawImage(imageCollision, 0, 0);
+  };
+
+  wards = []; // Réinitialiser les wards si tu veux une map propre à chaque changement
+}
+```
+
+---
+
+#### 3. 🖼️ Préparer tes fichiers
+
+Assure-toi d’avoir dans le dossier `img/` :
+- `map.png` et `map_mur.png` (ta map par défaut)
+- `map2.png` et `map2_mur.png` (la nouvelle map et son image de collision)
+
+---
+
+#### 4. 📦 Facultatif : ajouter une transition douce
+
+Tu peux ajouter un petit effet visuel ou une confirmation si tu veux rendre ça plus propre, mais le cœur du système est déjà là.
+
+
+
 ## 🧑‍💻 Développé avec ❤️ par Moi et ChatGPT
 
 ---
