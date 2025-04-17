@@ -78,7 +78,7 @@ function drawVisionCircleWithCollision(x, y, isInBush) {
     let rayLength = 0;
     let inBushRay = false;
     let out = false
-
+    let isInBushv2 = isInBush
     for (let i = 0; i < radius; i++) {
       const px = Math.floor(x + dx * i);
       const py = Math.floor(y + dy * i);
@@ -95,13 +95,13 @@ function drawVisionCircleWithCollision(x, y, isInBush) {
       
 
       if (!pixelIsBush && inBushRay) {
-        isInBush = false;
+        isInBushv2 = false;
         inBushRay = false;
       }
 
-      if (pixelIsBush && !inBushRay && isInBush) {
+      if (pixelIsBush && !inBushRay && isInBushv2) {
         inBushRay = true;
-      } else if (pixelIsBush && !inBushRay && !isInBush) {
+      } else if (pixelIsBush && !inBushRay && !isInBushv2) {
         break;
       }
 
